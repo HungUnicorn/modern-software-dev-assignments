@@ -7,7 +7,18 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+Reverse the order of letters in the given word. Output ONLY the reversed word, no other text.
+
+Input: javascript
+Output: tpircsavaj
+
+Input: programming
+Output: gnimmargorp
+
+Input: httpstatus
+Output: sutatsptth
+"""
 
 USER_PROMPT = """
 Reverse the order of letters in the following word. Only output the reversed word, no other text:

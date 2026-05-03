@@ -8,7 +8,15 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You are a math expert. To solve a^{b} (mod 100), you must use Euler's totient theorem.
+Follow these steps exactly:
+1. Note that phi(100) = 40. This means the last two digits repeat every 40 powers.
+2. Divide the exponent by 40 and find the remainder.
+3. Raise the base to the power of that remainder.
+4. Calculate the final result modulo 100.
+5. Provide the final answer on the last line exactly as "Answer: <number>".
+"""
 
 
 USER_PROMPT = """

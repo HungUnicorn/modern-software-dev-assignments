@@ -25,3 +25,11 @@ These steps work with Python 3.12.
    ```bash
    poetry install --no-interaction
    ```
+
+## Week 1 — Prompting Techniques
+- **K-Shot Prompting**: Overcoming tokenization limits for character-level tasks.
+- **Zero-Shot CoT**: Using mathematical theorems (Euler's Totient) to solve large exponents.
+- **Tool Calling**: Forcing models to output strictly parsable JSON for automated execution.
+- **Majority Voting**: Running multiple iterations and taking the most common answer to reduce errors.
+- **RAG**: Providing external API documentation to the model to generate accurate code.
+- **Reflexion**: Implementing a loop where the model corrects its code based on test failures.

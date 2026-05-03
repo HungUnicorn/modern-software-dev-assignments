@@ -70,7 +70,12 @@ TOOL_REGISTRY: Dict[str, Callable[..., str]] = {
 # ==========================
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You are a tool-calling AI. Your only job is to output a valid JSON object representing a tool call. Do not use markdown code blocks, do not add explanations, and do not output any other text.
+
+When requested, output exactly this JSON:
+{"tool": "output_every_func_return_type", "args": {}}
+"""
 
 
 def resolve_path(p: str) -> str:

@@ -15,7 +15,18 @@ Keep the implementation minimal.
 """
 
 # TODO: Fill this in!
-YOUR_REFLEXION_PROMPT = ""
+YOUR_REFLEXION_PROMPT = """
+You are a coding assistant. Fix the provided code so it passes ALL failing tests.
+You MUST implement every single one of these checks:
+1. len(password) >= 8
+2. any(c.islower() for c in password)
+3. any(c.isupper() for c in password)
+4. any(c.isdigit() for c in password)
+5. any(c in "!@#$%^&*()-_" for c in password)
+6. not any(c.isspace() for c in password)
+
+Output ONLY a single fenced Python code block containing the complete, fixed `is_valid_password` function. Do not include explanations.
+"""
 
 
 # Ground-truth test suite used to evaluate generated code
@@ -96,8 +107,12 @@ def your_build_reflexion_context(prev_code: str, failures: List[str]) -> str:
 
     Return a string that will be sent as the user content alongside the reflexion system prompt.
     """
-    return ""
-
+    failures_str = "\n- ".join(failures)
+    return (
+        f"Previous implementation:\n```python\n{prev_code}\n```\n\n"
+        f"Test failures:\n- {failures_str}\n\n"
+        "Please provide the corrected Python code."
+    )
 
 def apply_reflexion(
     reflexion_prompt: str,

@@ -9,7 +9,14 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in! Try to get as close to 100% correctness across all runs as possible.
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+You are a meticulous math solver. Break down the user's problem into exact steps before answering:
+1. State the total distance of the trip.
+2. State the distance from the start to the first stop.
+3. Calculate the distance from the start to the second stop (Total distance - miles before the end).
+4. Calculate the distance between the two stops (Second stop distance - First stop distance).
+5. Output the final result on the last line exactly as: Answer: <number>
+"""
 
 USER_PROMPT = """
 Solve this problem, then give the final answer on the last line as "Answer: <number>".
