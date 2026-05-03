@@ -1,34 +1,40 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List
+import sqlite3
+from typing import List
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
-from .. import db
-
+from ..db import get_db_connection, insert_note, get_note, list_notes
+from ..schemas import NoteCreate, NoteRead
 
 router = APIRouter(prefix="/notes", tags=["notes"])
 
 
-@router.post("")
-def create_note(payload: Dict[str, Any]) -> Dict[str, Any]:
-    content = str(payload.get("content", "")).strip()
-    if not content:
-        raise HTTPException(status_code=400, detail="content is required")
-    note_id = db.insert_note(content)
-    note = db.get_note(note_id)
-    return {
-        "id": note["id"],
-        "content": note["content"],
-        "created_at": note["created_at"],
-    }
+@router.post("", response_model=NoteRead)
+def create_note(
+    payload: NoteCreate,
+    conn: sqlite3.Connection = Depends(get_db_connection)
+) -> NoteRead:
+    note_id = insert_note(conn, payload.content)
+    row = get_note(conn, note_id)
+    if not row:
+        raise HTTPException(status_code=500, detail="Failed to create note")
+    return NoteRead(id=row["id"], content=row["content"], created_at=row["created_at"])
 
 
-@router.get("/{note_id}")
-def get_single_note(note_id: int) -> Dict[str, Any]:
-    row = db.get_note(note_id)
+@router.get("/{note_id}", response_model=NoteRead)
+def get_single_note(
+    note_id: int,
+    conn: sqlite3.Connection = Depends(get_db_connection)
+) -> NoteRead:
+    row = get_note(conn, note_id)
     if row is None:
-        raise HTTPException(status_code=404, detail="note not found")
-    return {"id": row["id"], "content": row["content"], "created_at": row["created_at"]}
+        raise HTTPException(status_code=404, detail="Note not found")
+    return NoteRead(id=row["id"], content=row["content"], created_at=row["created_at"])
 
 
+@router.get("", response_model=List[NoteRead])
+def get_all_notes(conn: sqlite3.Connection = Depends(get_db_connection)) -> List[NoteRead]:
+    rows = list_notes(conn)
+    return [NoteRead(id=row["id"], content=row["content"], created_at=row["created_at"]) for row in rows]

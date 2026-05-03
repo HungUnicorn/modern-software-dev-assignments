@@ -33,3 +33,6 @@ These steps work with Python 3.12.
 - **Majority Voting**: Running multiple iterations and taking the most common answer to reduce errors.
 - **RAG**: Providing external API documentation to the model to generate accurate code.
 - **Reflexion**: Implementing a loop where the model corrects its code based on test failures.
+
+## Week 2 — AI IDE
+Using Antigravity to evolve a basic note-taking app with programmatic heuristic extraction into a modern, robust, and AI-powered full-stack application.

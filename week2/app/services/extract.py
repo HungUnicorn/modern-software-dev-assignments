@@ -7,8 +7,13 @@ import json
 from typing import Any
 from ollama import chat
 from dotenv import load_dotenv
+from pydantic import BaseModel, Field
 
 load_dotenv()
+
+class ActionItemsResponse(BaseModel):
+    action_items: List[str] = Field(description="A list of extracted action items from the text.")
+
 
 BULLET_PREFIX_PATTERN = re.compile(r"^\s*([-*•]|\d+\.)\s+")
 KEYWORD_PREFIXES = (
@@ -87,3 +92,16 @@ def _looks_imperative(sentence: str) -> bool:
         "investigate",
     }
     return first.lower() in imperative_starters
+
+
+def extract_action_items_llm(text: str, model: str = "llama3.1") -> List[str]:
+    prompt = f"Extract all action items from the following text:\n\n{text}"
+    
+    response = chat(
+        model=model,
+        messages=[{'role': 'user', 'content': prompt}],
+        format=ActionItemsResponse.model_json_schema()
+    )
+    
+    parsed_response = ActionItemsResponse.model_validate_json(response['message']['content'])
+    return parsed_response.action_items
