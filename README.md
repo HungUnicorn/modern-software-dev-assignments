@@ -36,3 +36,6 @@ These steps work with Python 3.12.
 
 ## Week 2 — AI IDE
 Using Antigravity to evolve a basic note-taking app with programmatic heuristic extraction into a modern, robust, and AI-powered full-stack application.
+
+## Week 3 — Build a Custom MCP Server
+A Model Context Protocol (MCP) server written in Go that wraps the [Open-Meteo](https://open-meteo.com/) weather API. It runs locally over **STDIO transport** and integrates with any MCP-compatible client.
