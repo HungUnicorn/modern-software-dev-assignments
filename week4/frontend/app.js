@@ -1,6 +1,7 @@
 async function fetchJSON(url, options) {
   const res = await fetch(url, options);
   if (!res.ok) throw new Error(await res.text());
+  if (res.status === 204) return null;
   return res.json();
 }
 
@@ -11,6 +12,31 @@ async function loadNotes() {
   for (const n of notes) {
     const li = document.createElement('li');
     li.textContent = `${n.title}: ${n.content}`;
+
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.onclick = async () => {
+      const title = prompt('New title:', n.title);
+      if (title === null) return;
+      const content = prompt('New content:', n.content);
+      if (content === null) return;
+      await fetchJSON(`/notes/${n.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content }),
+      });
+      loadNotes();
+    };
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = 'Delete';
+    delBtn.onclick = async () => {
+      await fetchJSON(`/notes/${n.id}`, { method: 'DELETE' });
+      loadNotes();
+    };
+
+    li.appendChild(editBtn);
+    li.appendChild(delBtn);
     list.appendChild(li);
   }
 }

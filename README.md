@@ -39,3 +39,6 @@ Using Antigravity to evolve a basic note-taking app with programmatic heuristic 
 
 ## Week 3 — Build a Custom MCP Server
 A Model Context Protocol (MCP) server written in Go that wraps the [Open-Meteo](https://open-meteo.com/) weather API. It runs locally over **STDIO transport** and integrates with any MCP-compatible client.
+
+## Week 4 - The Autonomous Coding Agent
+ Build automations with custom slash commands-`.claude/skills/*.md`, `CLAUDE.md` files for repository or context guidance, Claude SubAgents (role-specialized agents working together) that improves developer workflow.
