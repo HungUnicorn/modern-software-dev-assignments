@@ -42,3 +42,6 @@ A Model Context Protocol (MCP) server written in Go that wraps the [Open-Meteo](
 
 ## Week 4 - The Autonomous Coding Agent
  Build automations with custom slash commands-`.claude/skills/*.md`, `CLAUDE.md` files for repository or context guidance, Claude SubAgents (role-specialized agents working together) that improves developer workflow.
+
+## Week 6 - Scan and Fix Vulnerabilities with Semgrep
+Run static analysis against the provided app using **Semgrep**. Triage findings and remediate security issues.

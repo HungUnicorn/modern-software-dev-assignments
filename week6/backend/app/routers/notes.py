@@ -68,16 +68,18 @@ def get_note(note_id: int, db: Session = Depends(get_db)) -> NoteRead:
 
 @router.get("/unsafe-search", response_model=list[NoteRead])
 def unsafe_search(q: str, db: Session = Depends(get_db)) -> list[NoteRead]:
+    # Removed the f-string and used named parameters (:q)
     sql = text(
-        f"""
+        """
         SELECT id, title, content, created_at, updated_at
         FROM notes
-        WHERE title LIKE '%{q}%' OR content LIKE '%{q}%'
+        WHERE title LIKE :q OR content LIKE :q
         ORDER BY created_at DESC
         LIMIT 50
         """
     )
-    rows = db.execute(sql).all()
+    # Passed the user input securely as a bound dictionary parameter
+    rows = db.execute(sql, {"q": f"%{q}%"}).all()
     results: list[NoteRead] = []
     for r in rows:
         results.append(
@@ -108,8 +110,10 @@ def debug_eval(expr: str) -> dict[str, str]:
 @router.get("/debug/run")
 def debug_run(cmd: str) -> dict[str, str]:
     import subprocess
-
-    completed = subprocess.run(cmd, shell=True, capture_output=True, text=True)  # noqa: S602,S603
+    import shlex
+# Split the command string safely and disable shell execution
+    safe_cmd = shlex.split(cmd)
+    completed = subprocess.run(safe_cmd, shell=False, capture_output=True, text=True)    
     return {"returncode": str(completed.returncode), "stdout": completed.stdout, "stderr": completed.stderr}
 
 
